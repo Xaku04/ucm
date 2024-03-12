@@ -56,20 +56,63 @@ app.get("/studentlist",(req,res)=>{
 });
 
 
-app.post("/savestudent",(req,res)=>{
+/*app.post("/savestudent",(req,res)=>{
 	let idno = req.body.idno;
 	let lastname = req.body.lastname;
 	let firstname = req.body.firstname;
 	let course = req.body.course;
 	let level = req.body.level;
-	slist.push({
-		'idno':idno,
-		'lastname':lastname,
-		'firstname':firstname,
-		'course':course,
-		'level':level,
-	});
-	res.status(200).send({'message':'New Student Added'});
+	
+	const existingStudentIndex = slist.findIndex(student => student.idno === idno);
+	
+	if(existingStudentIndex !== -1) 
+		
+		slist[existingStudentIndex] = {
+            idno,
+            lastname,
+            firstname,
+            course,
+            level
+        };
+        res.status(200).send({ message: 'Student updated successfully' });
+	} else {	
+	
+		slist.push({
+			'idno':idno,
+			'lastname':lastname,
+			'firstname':firstname,
+			'course':course,
+			'level':level,
+		});
+		res.status(200).send({'message':'New Student Added'});
+});*/
+
+app.post("/savestudent", (req, res) => {
+    const { idno, lastname, firstname, course, level } = req.body;
+
+    const existingStudentIndex = slist.findIndex(student => student.idno === idno);
+
+    if (existingStudentIndex !== -1) {
+       
+        slist[existingStudentIndex] = {
+            idno,
+            lastname,
+            firstname,
+            course,
+            level
+        };
+        res.status(200).send({ message: 'Student updated successfully' });
+    } else {
+       
+        slist.push({
+            idno,
+            lastname,
+            firstname,
+            course,
+            level
+        });
+        res.status(200).send({ message: 'New student added successfully' });
+    }
 });
 
 app.post("/login", (req, res) => {
@@ -79,6 +122,19 @@ app.post("/login", (req, res) => {
         res.status(200).send("Login successful!");
     } else {
         res.status(401).send("Invalid username or password");
+    }
+});
+
+app.get("/deletestudent", (req, res) => {
+    const { idno } = req.query;
+
+    const studentIndex = slist.findIndex(student => student.idno === idno);
+    console.log("Deleting Student idno :" + idno);
+    if (studentIndex !== -1) {
+        slist.splice(studentIndex, 1);
+        res.status(200).send({ message: 'Student deleted successfully' });
+    } else {
+        res.status(404).send({ error: 'Student not found' });
     }
 });
 

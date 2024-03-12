@@ -25,6 +25,10 @@
 				<td>{{ student.firstname | uppercase }}</td>
 				<td>{{ student.course | uppercase }}</td>
 				<td>{{ student.level }}</td>
+				<td>
+					<button class="w3-green w3-button" ng-click="editStudent(student)">&#9998;</button>
+                    <button class="w3-red w3-button" ng-click="deleteStudent(student.idno)">&times;</button>
+				</td>
 			  </tr>
 			</table>
 			<div class="w3-right">
